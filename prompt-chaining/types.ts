@@ -43,5 +43,5 @@ export type PipelineResult = {
     updatedCode?: UpdatedCode;
     commitInfo?: CommitInfo;
     success: boolean;
-    errorMessage?: string;
+    error?: string;
 }
