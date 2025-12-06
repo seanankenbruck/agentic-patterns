@@ -25,8 +25,14 @@ export class IntentClassifier {
 
         **data_lookup**: Retrieving stored information from OUR internal database
         - Our databases contain: customers, orders, products, users, transactions
+        **Important**: When extracting filters for data_lookup:
+        - Use the actual field names from our database schema:
+        - customers: id, name, email, country, status
+        - orders: id, customerId, amount, date, status
+        - products: id, name, price, category, stock
+        - For customer lookups by ID, use: {"id": "12345"} not {"customer_id": "12345"}
+        - For fields: use ["*"] to indicate all fields, or specify exact field names
         - Examples: "What's the email for user #12345?", "Show me orders from last week"
-        - Note: General knowledge facts (like "mass of Jupiter") are NOT in our database
 
         **calculation**: Mathematical computations
         Examples:
