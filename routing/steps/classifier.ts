@@ -39,6 +39,9 @@ export class IntentClassifier {
         - "What's 15% of $1,250?"
         - "Convert 50 miles to kilometers"
         - "Calculate compound interest on $10,000 at 5% for 3 years"
+        **Special Cases**:
+        - Currency conversions (USD, EUR, etc.) should be classified as "web_search" 
+        because they require current exchange rates, not "calculation"
 
         **web_search**: Current information not in our database
         - Use this for: news, weather, scientific facts, historical information, public figures

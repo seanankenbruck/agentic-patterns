@@ -20,7 +20,7 @@ export interface ClassificationResult {
         // For calculation
         operation?: string;   // e.g., 'sum', 'conversion', 'arithmetic'
         operands?: number[];  // Numbers involved
-        expression?: string;  // Human-readable expression'
+        expression?: string;  // Human-readable expression
 
         // For web_search
         searchQuery?: string; // Refined search terms
