@@ -23,6 +23,7 @@ export class WebSearchHandler extends BaseHandler {
 
         const mockResults = {
             query: classification.extractedData.searchQuery,
+            searchType: classification.extractedData.searchType || 'general',
             results: [
                 { title: 'Mock Result 1', snippet: 'This is a simulated search result', url: 'https://example.com/1' },
                 { title: 'Mock Result 2', snippet: 'Another simulated result', url: 'https://example.com/2' }
