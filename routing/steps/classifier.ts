@@ -45,6 +45,8 @@ export class IntentClassifier {
 
         **web_search**: Current information not in our database
         - Use this for: news, weather, scientific facts, historical information, public figures
+        **Important**: When determining search type:
+        - Select from these categories:  'news' | 'sports' | 'technology' | 'science' | 'politics' | 'general'
         Examples:
         - "What's the latest news about TypeScript?"
         - "Who won the 2024 Super Bowl?"
