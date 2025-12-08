@@ -102,10 +102,13 @@ export class IntentClassifier {
 
         Add "safetyFlags" for queries that:
         - Request PII (personally identifiable information)
-        - Contain potential SQL injection patterns (DROP, DELETE, etc.)
         - Request bulk data exports
         - Search for hacking/exploit information
         - Request personal information about individuals
+        "safetyFlags" should include "potential_sql_injection" for queries containing:
+        - SQL keywords like: DROP, DELETE, TRUNCATE, ALTER, UPDATE (when not in natural language context)
+        - SQL injection patterns like: WHERE 1=1, OR 1=1, --, /**/
+        - Suspicious combinations like "DELETE FROM"
 
         Example with safety flags:
         {
