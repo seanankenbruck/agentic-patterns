@@ -65,5 +65,5 @@ export abstract class BaseWorker {
   /**
    * Build user prompt for worker
    */
-  protected abstract buildUserPrompt(task: InstrumentationTask): string;
+  protected abstract buildUserPrompt(task: InstrumentationTask, ...args: any[]): string;
 }
