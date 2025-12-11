@@ -1,13 +1,14 @@
 {
   "name": "otel-orchestrator-workers",
   "version": "1.0.0",
+  "type": "module",
   "description": "Orchestrator-workers pattern for automatic OpenTelemetry instrumentation",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "instrument": "ts-node src/index.ts"
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "instrument": "node --loader ts-node/esm src/index.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",

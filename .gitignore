@@ -10,6 +10,7 @@ prometheus-config.yaml
 
 # Ignore compiled binaries
 bin/
+dist/
 
 # Ignore go build output
 query-processor

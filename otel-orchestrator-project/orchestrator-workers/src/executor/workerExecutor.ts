@@ -4,11 +4,11 @@ import {
   OrchestrationPlan,
   OrchestrationResult,
   WorkerResult
-} from '../types';
-import { DependencyWorker } from '../workers/dependencyWorker';
-import { ConfigWorker } from '../workers/configWorker';
-import { FileInstrumentationWorker } from '../workers/fileInstrumentationWorker';
-import { AnthropicClient } from '../utils/anthropicClient';
+} from '../types.js';
+import { DependencyWorker } from '../workers/dependencyWorker.js';
+import { ConfigWorker } from '../workers/configWorker.js';
+import { FileInstrumentationWorker } from '../workers/fileInstrumentationWorker.js';
+import { AnthropicClient } from '../utils/anthropicClient.js';
 
 
 export class WorkerExecutor {

@@ -5,8 +5,8 @@ import {
   FunctionInfo,
   DependencyInfo,
   PackageDependency
-} from '../types';
-import { FileInfo } from '../utils/fileSystem';
+} from '../types.js';
+import { FileInfo } from '../utils/fileSystem.js';
 
 export class CodebaseAnalyzer {
   /**

@@ -3,8 +3,8 @@ import {
   WorkerResult,
   WorkerType,
   FileChange
-} from '../types';
-import { AnthropicClient } from '../utils/anthropicClient';
+} from '../types.js';
+import { AnthropicClient } from '../utils/anthropicClient.js';
 
 export abstract class BaseWorker {
   protected client: AnthropicClient;

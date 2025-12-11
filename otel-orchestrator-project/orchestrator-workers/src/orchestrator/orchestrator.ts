@@ -4,7 +4,7 @@ import {
   OrchestrationPlan,
   WorkerType,
   TaskContext
-} from '../types';
+} from '../types.js';
 
  /**
    * Create an orchestration plan from codebase analysis

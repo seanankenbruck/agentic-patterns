@@ -1,12 +1,12 @@
-import { BaseWorker } from './baseWorker';
+import { BaseWorker } from './baseWorker.js';
 import {
   InstrumentationTask,
   WorkerResult,
   FileChange,
   WorkerType
-} from '../types';
-import { AnthropicClient } from '../utils/anthropicClient';
-import { FileSystemUtil } from '../utils/fileSystem';
+} from '../types.js';
+import { AnthropicClient } from '../utils/anthropicClient.js';
+import { FileSystemUtil } from '../utils/fileSystem.js';
 import * as path from 'path';
 
 export class FileInstrumentationWorker extends BaseWorker {

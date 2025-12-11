@@ -1,10 +1,10 @@
-import { BaseWorker } from './baseWorker';
+import { BaseWorker } from './baseWorker.js';
 import {
   InstrumentationTask,
   WorkerResult,
   FileChange
-} from '../types';
-import { AnthropicClient } from '../utils/anthropicClient';
+} from '../types.js';
+import { AnthropicClient } from '../utils/anthropicClient.js';
 import * as path from 'path';
 
 export class ConfigWorker extends BaseWorker {
