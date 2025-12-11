@@ -8,6 +8,7 @@ import { FileSystemUtil } from './utils/fileSystem.js';
 import { CodebaseAnalyzer } from './analyzer/codebaseAnalyzer.js';
 import { Orchestrator } from './orchestrator/orchestrator.js';
 import { WorkerExecutor } from './executor/workerExecutor.js';
+import { OrchestrationPlan, OrchestrationResult, FileChange } from './types.js';
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -26,7 +27,7 @@ async function main() {
     console.log("🚀 Starting Orchestrator-Worker Test\n");
     console.log("=".repeat(80));
 
-    // Create client and summarizer
+    // Create client
     const client = new AnthropicClient(apiKey);
 
     const sampleAppPath = path.join(__dirname, '../../sample-app');
@@ -71,26 +72,27 @@ async function main() {
 
 
     console.log('\n📋 Step 2: Creating orchestration plan...');
-    // TODO: Create plan using Orchestrator.createPlan()
     const plan = Orchestrator.createPlan(analysis);
-    // TODO: Print plan summary (tasks, execution order, estimated duration)
-    
+    printPlanSummary(plan);
+
 
     console.log('\n⚙️  Step 3: Executing instrumentation...');
-    // TODO: Create AnthropicClient
-    // TODO: Create WorkerExecutor
-    // TODO: Execute plan using executor.execute()
+    const executor = new WorkerExecutor(client, sampleAppPath);
+    const result = await executor.execute(plan);
 
     console.log('\n📊 Step 4: Results summary...');
-    // TODO: Print orchestration result summary
-    // TODO: Show success/failure status
-    // TODO: List files modified/created
-    // TODO: Show any errors
+    printResultsSummary(result);
 
     console.log('\n💾 Step 5: Writing instrumented files...');
-    // TODO: Copy sample-app to sample-app-instrumented
-    // TODO: Apply all file changes from worker results
-    // TODO: Print completion message
+    console.log(`  Copying ${sampleAppPath} to ${outputPath}...`);
+    await FileSystemUtil.copyDirectory(sampleAppPath, outputPath);
+
+    console.log(`  Applying ${result.workerResults.length} worker changes...`);
+    const allChanges = result.workerResults.flatMap(wr => wr.changes);
+    await applyChanges(outputPath, allChanges);
+
+    console.log(`\n✨ Instrumentation complete!`);
+    console.log(`📁 Instrumented code written to: ${outputPath}`);
 
   } catch (error) {
     console.error('❌ Error:', error);
@@ -99,34 +101,74 @@ async function main() {
 }
 
 // Helper function to apply file changes
-// async function applyChanges(
-//   outputPath: string,
-//   changes: FileChange[]
-// ): Promise<void> {
-//   // TODO: For each change:
-//   //   - Build full output path
-//   //   - Write newContent to file using FileSystemUtil.writeFile()
-//   //   - Print what was done
-// }
+async function applyChanges(
+  outputPath: string,
+  changes: FileChange[]
+): Promise<void> {
+  for (const change of changes) {
+    const targetPath = path.join(outputPath, change.path);
 
-// // Helper function to print plan summary
-// function printPlanSummary(plan: OrchestrationPlan): void {
-//   // TODO: Print:
-//   //   - Total tasks
-//   //   - Tasks by type
-//   //   - Execution order (batches)
-//   //   - Estimated duration
-// }
+    if (change.operation === 'create' && change.newContent) {
+      await FileSystemUtil.writeFile(targetPath, change.newContent);
+      console.log(`    ✅ Created: ${change.path}`);
+    } else if (change.operation === 'modify' && change.newContent) {
+      await FileSystemUtil.writeFile(targetPath, change.newContent);
+      console.log(`    ✅ Modified: ${change.path}`);
+    }
+  }
+}
 
-// // Helper function to print results summary
-// function printResultsSummary(result: OrchestrationResult): void {
-//   // TODO: Print:
-//   //   - Success status
-//   //   - Files analyzed/modified/created
-//   //   - Packages added
-//   //   - Duration
-//   //   - Instrumentation points
-//   //   - Any errors
-// }
+// Helper function to print plan summary
+function printPlanSummary(plan: OrchestrationPlan): void {
+  // Count tasks by type
+  const tasksByType = plan.tasks.reduce((acc, task) => {
+    acc[task.type] = (acc[task.type] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  console.log(`\n📊 Plan Summary:`);
+  console.log(`  Total tasks: ${plan.tasks.length}`);
+  console.log(`  Tasks by type:`);
+  Object.entries(tasksByType).forEach(([type, count]) => {
+    console.log(`    - ${type}: ${count}`);
+  });
+
+  console.log(`  Execution batches: ${plan.executionOrder.length}`);
+  console.log(`  Execution order:`);
+  plan.executionOrder.forEach((batch, index) => {
+    console.log(`    Batch ${index + 1}: ${batch.length} task(s) - ${batch.join(', ')}`);
+  });
+  console.log(`  Estimated duration: ${plan.estimatedDuration}`);
+}
+
+// Helper function to print results summary
+function printResultsSummary(result: OrchestrationResult): void {
+  console.log(`  Status: ${result.success ? '✅ Success' : '❌ Failed'}`);
+  console.log(`  Files analyzed: ${result.summary.filesAnalyzed}`);
+  console.log(`  Files modified: ${result.summary.filesModified}`);
+  console.log(`  Files created: ${result.summary.filesCreated}`);
+  console.log(`  Packages added: ${result.summary.packagesAdded.length}`);
+  if (result.summary.packagesAdded.length > 0) {
+    console.log(`    - ${result.summary.packagesAdded.join(', ')}`);
+  }
+  console.log(`  Instrumentation points: ${result.summary.instrumentationPoints.length}`);
+  console.log(`  Duration: ${(result.summary.duration / 1000).toFixed(2)}s`);
+
+  // Show worker results
+  console.log(`\n  Worker Results:`);
+  result.workerResults.forEach((wr) => {
+    const status = wr.success ? '✅' : '❌';
+    console.log(`    ${status} ${wr.workerType}: ${wr.message}`);
+    if (wr.errors && wr.errors.length > 0) {
+      wr.errors.forEach(err => console.log(`      Error: ${err}`));
+    }
+  });
+
+  // Show any overall errors
+  if (result.errors.length > 0) {
+    console.log(`\n  Errors:`);
+    result.errors.forEach(err => console.log(`    - ${err}`));
+  }
+}
 
 main();
