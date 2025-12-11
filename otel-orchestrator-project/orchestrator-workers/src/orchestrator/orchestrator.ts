@@ -6,10 +6,10 @@ import {
   TaskContext
 } from '../types';
 
-export class Orchestrator {
-  /**
+ /**
    * Create an orchestration plan from codebase analysis
    */
+export class Orchestrator {
   static createPlan(analysis: CodebaseAnalysis): OrchestrationPlan {
     const tasks: InstrumentationTask[] = [];
     let taskIdCounter = 0;
@@ -82,7 +82,7 @@ export class Orchestrator {
           id: `${workerType}-${taskId}`,
           type: workerType,
           targetFile: file.path,
-          instructions: this.createFileInstructions(file, workerType, analysis),
+          instructions: this.createFileInstructions(file, workerType),
           priority: 3,
           dependencies: [configTaskId],
           context: this.createTaskContext(analysis, [file])
@@ -166,8 +166,7 @@ Return the complete tracing.ts file content.
    */
   private static createFileInstructions(
     file: any,
-    workerType: WorkerType,
-    analysis: CodebaseAnalysis
+    workerType: WorkerType
   ): string {
     const baseInstructions = `
 You are a ${workerType} instrumentation worker. Your task is to add OpenTelemetry spans to the following file.
