@@ -1,0 +1,5611 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "E-commerce API",
+    "description": "Complete API for online store operations including product catalog, shopping cart, checkout, and user management.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example-store.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User login",
+        "description": "Authenticate user and return JWT token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "user@example.com",
+                  "password": "password123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "example": {
+                        "id": "user123",
+                        "email": "user@example.com",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "phone": "+1234567890",
+                        "createdAt": "2023-01-15T10:30:00Z"
+                      }
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "user": {
+                      "id": "user123",
+                      "email": "user@example.com",
+                      "firstName": "John",
+                      "lastName": "Doe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User registration",
+        "description": "Create new user account.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "firstName",
+                  "lastName"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "newuser@example.com",
+                  "password": "securepass123",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "phone": "+1234567890"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "example": {
+                        "id": "user123",
+                        "email": "user@example.com",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "phone": "+1234567890",
+                        "createdAt": "2023-01-15T10:30:00Z"
+                      }
+                    }
+                  },
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "user": {
+                      "id": "user123",
+                      "email": "user@example.com",
+                      "firstName": "John",
+                      "lastName": "Doe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Get user profile",
+        "description": "Retrieve authenticated user's profile information.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "id": "user123",
+                    "email": "user@example.com",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "phone": "+1234567890",
+                    "createdAt": "2023-01-15T10:30:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Update user profile",
+        "description": "Update authenticated user's profile information.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Smith",
+                  "phone": "+1987654321"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "id": "user123",
+                    "email": "user@example.com",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "phone": "+1234567890",
+                    "createdAt": "2023-01-15T10:30:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/addresses": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Get user addresses",
+        "description": "Retrieve all addresses for authenticated user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Addresses retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      },
+                      "company": {
+                        "type": "string"
+                      },
+                      "address1": {
+                        "type": "string"
+                      },
+                      "address2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "isDefault": {
+                        "type": "boolean"
+                      }
+                    },
+                    "example": {
+                      "id": "addr123",
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "address1": "123 Main St",
+                      "city": "New York",
+                      "state": "NY",
+                      "postalCode": "10001",
+                      "country": "US",
+                      "isDefault": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Add new address",
+        "description": "Add new address to user's address book.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "address1",
+                  "city",
+                  "state",
+                  "postalCode",
+                  "country"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "address1": {
+                    "type": "string"
+                  },
+                  "address2": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "postalCode": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "isDefault": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "address1": "456 Oak Ave",
+                  "city": "Los Angeles",
+                  "state": "CA",
+                  "postalCode": "90210",
+                  "country": "US",
+                  "isDefault": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Address created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "company": {
+                      "type": "string"
+                    },
+                    "address1": {
+                      "type": "string"
+                    },
+                    "address2": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "addr123",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "address1": "123 Main St",
+                    "city": "New York",
+                    "state": "NY",
+                    "postalCode": "10001",
+                    "country": "US",
+                    "isDefault": true
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Product Catalog"
+        ],
+        "summary": "Search products",
+        "description": "Search and filter products with pagination.",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search term",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "description": "Minimum price filter",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "description": "Maximum price filter",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Products retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "category": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "imageUrl": {
+                            "type": "string"
+                          },
+                          "inStock": {
+                            "type": "boolean"
+                          }
+                        },
+                        "example": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt",
+                          "description": "Comfortable cotton t-shirt",
+                          "category": "clothing",
+                          "price": 29.99,
+                          "imageUrl": "https://example.com/images/tshirt.jpg",
+                          "inStock": true
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "pages": {
+                          "type": "integer"
+                        }
+                      },
+                      "example": {
+                        "page": 1,
+                        "limit": 20,
+                        "total": 100,
+                        "pages": 5
+                      }
+                    }
+                  },
+                  "example": {
+                    "products": [
+                      {
+                        "id": "prod123",
+                        "name": "Cotton T-Shirt",
+                        "category": "clothing",
+                        "price": 29.99,
+                        "imageUrl": "https://example.com/images/tshirt.jpg",
+                        "inStock": true
+                      }
+                    ],
+                    "pagination": {
+                      "page": 1,
+                      "limit": 20,
+                      "total": 100,
+                      "pages": 5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": [
+          "Product Catalog"
+        ],
+        "summary": "Get product details",
+        "description": "Retrieve detailed product information including variants.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "Product ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "imageUrl": {
+                          "type": "string"
+                        },
+                        "inStock": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "prod123",
+                        "name": "Cotton T-Shirt",
+                        "description": "Comfortable cotton t-shirt",
+                        "category": "clothing",
+                        "price": 29.99,
+                        "imageUrl": "https://example.com/images/tshirt.jpg",
+                        "inStock": true
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "variants": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          }
+                        },
+                        "images": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "example": {
+                    "id": "prod123",
+                    "name": "Cotton T-Shirt",
+                    "description": "Comfortable cotton t-shirt",
+                    "category": "clothing",
+                    "price": 29.99,
+                    "imageUrl": "https://example.com/images/tshirt.jpg",
+                    "inStock": true,
+                    "variants": [
+                      {
+                        "id": "var123",
+                        "size": "M",
+                        "color": "Blue",
+                        "sku": "TSHIRT-M-BLUE",
+                        "price": 29.99,
+                        "inventory": 50
+                      }
+                    ],
+                    "images": [
+                      "https://example.com/images/tshirt1.jpg",
+                      "https://example.com/images/tshirt2.jpg"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "Shopping Cart"
+        ],
+        "summary": "Get cart contents",
+        "description": "Retrieve current cart with items and totals.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "product": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "inStock": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt",
+                              "description": "Comfortable cotton t-shirt",
+                              "category": "clothing",
+                              "price": 29.99,
+                              "imageUrl": "https://example.com/images/tshirt.jpg",
+                              "inStock": true
+                            }
+                          },
+                          "variant": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "unitPrice": {
+                            "type": "number"
+                          },
+                          "totalPrice": {
+                            "type": "number"
+                          }
+                        },
+                        "example": {
+                          "id": "item123",
+                          "product": {
+                            "id": "prod123",
+                            "name": "Cotton T-Shirt"
+                          },
+                          "variant": {
+                            "id": "var123",
+                            "size": "L",
+                            "color": "Green"
+                          },
+                          "quantity": 1,
+                          "unitPrice": 29.99,
+                          "totalPrice": 29.99
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    }
+                  },
+                  "example": {
+                    "id": "cart123",
+                    "items": [
+                      {
+                        "id": "item123",
+                        "product": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt"
+                        },
+                        "variant": {
+                          "id": "var123",
+                          "size": "M",
+                          "color": "Blue"
+                        },
+                        "quantity": 2,
+                        "unitPrice": 29.99,
+                        "totalPrice": 59.98
+                      }
+                    ],
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Shopping Cart"
+        ],
+        "summary": "Clear cart",
+        "description": "Remove all items from cart.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cart cleared"
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/items": {
+      "post": {
+        "tags": [
+          "Shopping Cart"
+        ],
+        "summary": "Add item to cart",
+        "description": "Add product variant to shopping cart.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "variantId",
+                  "quantity"
+                ],
+                "properties": {
+                  "variantId": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "example": {
+                  "variantId": "var123",
+                  "quantity": 2
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Item added to cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "product": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "inStock": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt",
+                              "description": "Comfortable cotton t-shirt",
+                              "category": "clothing",
+                              "price": 29.99,
+                              "imageUrl": "https://example.com/images/tshirt.jpg",
+                              "inStock": true
+                            }
+                          },
+                          "variant": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "unitPrice": {
+                            "type": "number"
+                          },
+                          "totalPrice": {
+                            "type": "number"
+                          }
+                        },
+                        "example": {
+                          "id": "item123",
+                          "product": {
+                            "id": "prod123",
+                            "name": "Cotton T-Shirt"
+                          },
+                          "variant": {
+                            "id": "var123",
+                            "size": "L",
+                            "color": "Green"
+                          },
+                          "quantity": 1,
+                          "unitPrice": 29.99,
+                          "totalPrice": 29.99
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    }
+                  },
+                  "example": {
+                    "id": "cart123",
+                    "items": [
+                      {
+                        "id": "item123",
+                        "product": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt"
+                        },
+                        "variant": {
+                          "id": "var123",
+                          "size": "M",
+                          "color": "Blue"
+                        },
+                        "quantity": 2,
+                        "unitPrice": 29.99,
+                        "totalPrice": 59.98
+                      }
+                    ],
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/items/{itemId}": {
+      "put": {
+        "tags": [
+          "Shopping Cart"
+        ],
+        "summary": "Update cart item",
+        "description": "Update quantity of cart item.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "description": "Cart item ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "quantity"
+                ],
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "example": {
+                  "quantity": 3
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cart item updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "product": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "inStock": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt",
+                              "description": "Comfortable cotton t-shirt",
+                              "category": "clothing",
+                              "price": 29.99,
+                              "imageUrl": "https://example.com/images/tshirt.jpg",
+                              "inStock": true
+                            }
+                          },
+                          "variant": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "unitPrice": {
+                            "type": "number"
+                          },
+                          "totalPrice": {
+                            "type": "number"
+                          }
+                        },
+                        "example": {
+                          "id": "item123",
+                          "product": {
+                            "id": "prod123",
+                            "name": "Cotton T-Shirt"
+                          },
+                          "variant": {
+                            "id": "var123",
+                            "size": "L",
+                            "color": "Green"
+                          },
+                          "quantity": 1,
+                          "unitPrice": 29.99,
+                          "totalPrice": 29.99
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    }
+                  },
+                  "example": {
+                    "id": "cart123",
+                    "items": [
+                      {
+                        "id": "item123",
+                        "product": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt"
+                        },
+                        "variant": {
+                          "id": "var123",
+                          "size": "M",
+                          "color": "Blue"
+                        },
+                        "quantity": 2,
+                        "unitPrice": 29.99,
+                        "totalPrice": 59.98
+                      }
+                    ],
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Shopping Cart"
+        ],
+        "summary": "Remove cart item",
+        "description": "Remove item from shopping cart.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "description": "Cart item ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "product": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "inStock": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt",
+                              "description": "Comfortable cotton t-shirt",
+                              "category": "clothing",
+                              "price": 29.99,
+                              "imageUrl": "https://example.com/images/tshirt.jpg",
+                              "inStock": true
+                            }
+                          },
+                          "variant": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "unitPrice": {
+                            "type": "number"
+                          },
+                          "totalPrice": {
+                            "type": "number"
+                          }
+                        },
+                        "example": {
+                          "id": "item123",
+                          "product": {
+                            "id": "prod123",
+                            "name": "Cotton T-Shirt"
+                          },
+                          "variant": {
+                            "id": "var123",
+                            "size": "L",
+                            "color": "Green"
+                          },
+                          "quantity": 1,
+                          "unitPrice": 29.99,
+                          "totalPrice": 29.99
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    }
+                  },
+                  "example": {
+                    "id": "cart123",
+                    "items": [
+                      {
+                        "id": "item123",
+                        "product": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt"
+                        },
+                        "variant": {
+                          "id": "var123",
+                          "size": "M",
+                          "color": "Blue"
+                        },
+                        "quantity": 2,
+                        "unitPrice": 29.99,
+                        "totalPrice": 59.98
+                      }
+                    ],
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout": {
+      "post": {
+        "tags": [
+          "Checkout"
+        ],
+        "summary": "Create checkout session",
+        "description": "Initialize checkout process with shipping and billing information.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "shippingAddressId"
+                ],
+                "properties": {
+                  "shippingAddressId": {
+                    "type": "string"
+                  },
+                  "billingAddressId": {
+                    "type": "string"
+                  },
+                  "shippingMethod": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "express",
+                      "overnight"
+                    ]
+                  }
+                },
+                "example": {
+                  "shippingAddressId": "addr123",
+                  "billingAddressId": "addr123",
+                  "shippingMethod": "standard"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Checkout session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "cart": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "product": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  },
+                                  "category": {
+                                    "type": "string"
+                                  },
+                                  "price": {
+                                    "type": "number"
+                                  },
+                                  "imageUrl": {
+                                    "type": "string"
+                                  },
+                                  "inStock": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "example": {
+                                  "id": "prod123",
+                                  "name": "Cotton T-Shirt",
+                                  "description": "Comfortable cotton t-shirt",
+                                  "category": "clothing",
+                                  "price": 29.99,
+                                  "imageUrl": "https://example.com/images/tshirt.jpg",
+                                  "inStock": true
+                                }
+                              },
+                              "variant": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "size": {
+                                    "type": "string"
+                                  },
+                                  "color": {
+                                    "type": "string"
+                                  },
+                                  "sku": {
+                                    "type": "string"
+                                  },
+                                  "price": {
+                                    "type": "number"
+                                  },
+                                  "inventory": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "example": {
+                                  "id": "var123",
+                                  "size": "L",
+                                  "color": "Red",
+                                  "sku": "TSHIRT-L-RED",
+                                  "price": 29.99,
+                                  "inventory": 25
+                                }
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "unitPrice": {
+                                "type": "number"
+                              },
+                              "totalPrice": {
+                                "type": "number"
+                              }
+                            },
+                            "example": {
+                              "id": "item123",
+                              "product": {
+                                "id": "prod123",
+                                "name": "Cotton T-Shirt"
+                              },
+                              "variant": {
+                                "id": "var123",
+                                "size": "L",
+                                "color": "Green"
+                              },
+                              "quantity": 1,
+                              "unitPrice": 29.99,
+                              "totalPrice": 29.99
+                            }
+                          }
+                        },
+                        "totals": {
+                          "type": "object",
+                          "properties": {
+                            "subtotal": {
+                              "type": "number"
+                            },
+                            "tax": {
+                              "type": "number"
+                            },
+                            "shipping": {
+                              "type": "number"
+                            },
+                            "discount": {
+                              "type": "number"
+                            },
+                            "total": {
+                              "type": "number"
+                            }
+                          },
+                          "example": {
+                            "subtotal": 59.98,
+                            "tax": 5.4,
+                            "shipping": 9.99,
+                            "discount": 0,
+                            "total": 75.37
+                          }
+                        }
+                      },
+                      "example": {
+                        "id": "cart123",
+                        "items": [
+                          {
+                            "id": "item123",
+                            "product": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt"
+                            },
+                            "variant": {
+                              "id": "var123",
+                              "size": "M",
+                              "color": "Blue"
+                            },
+                            "quantity": 2,
+                            "unitPrice": 29.99,
+                            "totalPrice": 59.98
+                          }
+                        ],
+                        "totals": {
+                          "subtotal": 59.98,
+                          "tax": 5.4,
+                          "shipping": 9.99,
+                          "total": 75.37
+                        }
+                      }
+                    },
+                    "shippingAddress": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "company": {
+                          "type": "string"
+                        },
+                        "address1": {
+                          "type": "string"
+                        },
+                        "address2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "postalCode": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "isDefault": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "addr123",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "address1": "123 Main St",
+                        "city": "New York",
+                        "state": "NY",
+                        "postalCode": "10001",
+                        "country": "US",
+                        "isDefault": true
+                      }
+                    },
+                    "billingAddress": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "company": {
+                          "type": "string"
+                        },
+                        "address1": {
+                          "type": "string"
+                        },
+                        "address2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "postalCode": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "isDefault": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "addr123",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "address1": "123 Main St",
+                        "city": "New York",
+                        "state": "NY",
+                        "postalCode": "10001",
+                        "country": "US",
+                        "isDefault": true
+                      }
+                    },
+                    "shippingMethod": {
+                      "type": "string"
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "id": "checkout123",
+                    "shippingMethod": "standard",
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    },
+                    "expiresAt": "2023-01-15T11:30:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkout/{sessionId}/payment": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Process payment",
+        "description": "Process payment for checkout session.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "description": "Checkout session ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "method"
+                ],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "card",
+                      "paypal",
+                      "apple_pay",
+                      "google_pay"
+                    ]
+                  },
+                  "cardDetails": {
+                    "type": "object",
+                    "required": [
+                      "number",
+                      "expiryMonth",
+                      "expiryYear",
+                      "cvv",
+                      "name"
+                    ],
+                    "properties": {
+                      "number": {
+                        "type": "string"
+                      },
+                      "expiryMonth": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 12
+                      },
+                      "expiryYear": {
+                        "type": "integer"
+                      },
+                      "cvv": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "number": "4111111111111111",
+                      "expiryMonth": 12,
+                      "expiryYear": 2025,
+                      "cvv": "123",
+                      "name": "John Doe"
+                    }
+                  },
+                  "paypalDetails": {
+                    "type": "object",
+                    "required": [
+                      "email"
+                    ],
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      }
+                    },
+                    "example": {
+                      "email": "user@example.com"
+                    }
+                  }
+                },
+                "example": {
+                  "method": "card",
+                  "cardDetails": {
+                    "number": "4111111111111111",
+                    "expiryMonth": 12,
+                    "expiryYear": 2025,
+                    "cvv": "123",
+                    "name": "John Doe"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderId": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "failed",
+                        "pending"
+                      ]
+                    },
+                    "transactionId": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "orderId": "order123",
+                    "status": "success",
+                    "transactionId": "txn123456",
+                    "message": "Payment processed successfully"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get user orders",
+        "description": "Retrieve order history for authenticated user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Orders retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "orderNumber": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "pending",
+                              "confirmed",
+                              "shipped",
+                              "delivered",
+                              "cancelled"
+                            ]
+                          },
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "product": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "description": {
+                                      "type": "string"
+                                    },
+                                    "category": {
+                                      "type": "string"
+                                    },
+                                    "price": {
+                                      "type": "number"
+                                    },
+                                    "imageUrl": {
+                                      "type": "string"
+                                    },
+                                    "inStock": {
+                                      "type": "boolean"
+                                    }
+                                  },
+                                  "example": {
+                                    "id": "prod123",
+                                    "name": "Cotton T-Shirt",
+                                    "description": "Comfortable cotton t-shirt",
+                                    "category": "clothing",
+                                    "price": 29.99,
+                                    "imageUrl": "https://example.com/images/tshirt.jpg",
+                                    "inStock": true
+                                  }
+                                },
+                                "variant": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "size": {
+                                      "type": "string"
+                                    },
+                                    "color": {
+                                      "type": "string"
+                                    },
+                                    "sku": {
+                                      "type": "string"
+                                    },
+                                    "price": {
+                                      "type": "number"
+                                    },
+                                    "inventory": {
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "example": {
+                                    "id": "var123",
+                                    "size": "L",
+                                    "color": "Red",
+                                    "sku": "TSHIRT-L-RED",
+                                    "price": 29.99,
+                                    "inventory": 25
+                                  }
+                                },
+                                "quantity": {
+                                  "type": "integer"
+                                },
+                                "unitPrice": {
+                                  "type": "number"
+                                },
+                                "totalPrice": {
+                                  "type": "number"
+                                }
+                              },
+                              "example": {
+                                "id": "orderitem123",
+                                "product": {
+                                  "id": "prod123",
+                                  "name": "Cotton T-Shirt"
+                                },
+                                "variant": {
+                                  "size": "L",
+                                  "color": "Red"
+                                },
+                                "quantity": 1,
+                                "unitPrice": 29.99,
+                                "totalPrice": 29.99
+                              }
+                            }
+                          },
+                          "shippingAddress": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "firstName": {
+                                "type": "string"
+                              },
+                              "lastName": {
+                                "type": "string"
+                              },
+                              "company": {
+                                "type": "string"
+                              },
+                              "address1": {
+                                "type": "string"
+                              },
+                              "address2": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "state": {
+                                "type": "string"
+                              },
+                              "postalCode": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              },
+                              "isDefault": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "addr123",
+                              "firstName": "John",
+                              "lastName": "Doe",
+                              "address1": "123 Main St",
+                              "city": "New York",
+                              "state": "NY",
+                              "postalCode": "10001",
+                              "country": "US",
+                              "isDefault": true
+                            }
+                          },
+                          "billingAddress": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "firstName": {
+                                "type": "string"
+                              },
+                              "lastName": {
+                                "type": "string"
+                              },
+                              "company": {
+                                "type": "string"
+                              },
+                              "address1": {
+                                "type": "string"
+                              },
+                              "address2": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "state": {
+                                "type": "string"
+                              },
+                              "postalCode": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              },
+                              "isDefault": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "addr123",
+                              "firstName": "John",
+                              "lastName": "Doe",
+                              "address1": "123 Main St",
+                              "city": "New York",
+                              "state": "NY",
+                              "postalCode": "10001",
+                              "country": "US",
+                              "isDefault": true
+                            }
+                          },
+                          "totals": {
+                            "type": "object",
+                            "properties": {
+                              "subtotal": {
+                                "type": "number"
+                              },
+                              "tax": {
+                                "type": "number"
+                              },
+                              "shipping": {
+                                "type": "number"
+                              },
+                              "discount": {
+                                "type": "number"
+                              },
+                              "total": {
+                                "type": "number"
+                              }
+                            },
+                            "example": {
+                              "subtotal": 59.98,
+                              "tax": 5.4,
+                              "shipping": 9.99,
+                              "discount": 0,
+                              "total": 75.37
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "example": {
+                          "id": "order123",
+                          "orderNumber": "ORD-2023-0001",
+                          "status": "confirmed",
+                          "items": [
+                            {
+                              "id": "orderitem123",
+                              "product": {
+                                "id": "prod123",
+                                "name": "Cotton T-Shirt"
+                              },
+                              "variant": {
+                                "size": "M",
+                                "color": "Blue"
+                              },
+                              "quantity": 2,
+                              "unitPrice": 29.99,
+                              "totalPrice": 59.98
+                            }
+                          ],
+                          "totals": {
+                            "subtotal": 59.98,
+                            "tax": 5.4,
+                            "shipping": 9.99,
+                            "total": 75.37
+                          },
+                          "createdAt": "2023-01-15T10:30:00Z"
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "pages": {
+                          "type": "integer"
+                        }
+                      },
+                      "example": {
+                        "page": 1,
+                        "limit": 20,
+                        "total": 100,
+                        "pages": 5
+                      }
+                    }
+                  },
+                  "example": {
+                    "orders": [
+                      {
+                        "id": "order123",
+                        "orderNumber": "ORD-2023-0001",
+                        "status": "delivered",
+                        "totals": {
+                          "total": 75.37
+                        },
+                        "createdAt": "2023-01-15T10:30:00Z"
+                      }
+                    ],
+                    "pagination": {
+                      "page": 1,
+                      "limit": 10,
+                      "total": 25,
+                      "pages": 3
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get order details",
+        "description": "Retrieve detailed order information.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Order ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "orderNumber": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "confirmed",
+                        "shipped",
+                        "delivered",
+                        "cancelled"
+                      ]
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "product": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "inStock": {
+                                "type": "boolean"
+                              }
+                            },
+                            "example": {
+                              "id": "prod123",
+                              "name": "Cotton T-Shirt",
+                              "description": "Comfortable cotton t-shirt",
+                              "category": "clothing",
+                              "price": 29.99,
+                              "imageUrl": "https://example.com/images/tshirt.jpg",
+                              "inStock": true
+                            }
+                          },
+                          "variant": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "color": {
+                                "type": "string"
+                              },
+                              "sku": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "inventory": {
+                                "type": "integer"
+                              }
+                            },
+                            "example": {
+                              "id": "var123",
+                              "size": "L",
+                              "color": "Red",
+                              "sku": "TSHIRT-L-RED",
+                              "price": 29.99,
+                              "inventory": 25
+                            }
+                          },
+                          "quantity": {
+                            "type": "integer"
+                          },
+                          "unitPrice": {
+                            "type": "number"
+                          },
+                          "totalPrice": {
+                            "type": "number"
+                          }
+                        },
+                        "example": {
+                          "id": "orderitem123",
+                          "product": {
+                            "id": "prod123",
+                            "name": "Cotton T-Shirt"
+                          },
+                          "variant": {
+                            "size": "L",
+                            "color": "Red"
+                          },
+                          "quantity": 1,
+                          "unitPrice": 29.99,
+                          "totalPrice": 29.99
+                        }
+                      }
+                    },
+                    "shippingAddress": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "company": {
+                          "type": "string"
+                        },
+                        "address1": {
+                          "type": "string"
+                        },
+                        "address2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "postalCode": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "isDefault": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "addr123",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "address1": "123 Main St",
+                        "city": "New York",
+                        "state": "NY",
+                        "postalCode": "10001",
+                        "country": "US",
+                        "isDefault": true
+                      }
+                    },
+                    "billingAddress": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "company": {
+                          "type": "string"
+                        },
+                        "address1": {
+                          "type": "string"
+                        },
+                        "address2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "postalCode": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "isDefault": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "addr123",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "address1": "123 Main St",
+                        "city": "New York",
+                        "state": "NY",
+                        "postalCode": "10001",
+                        "country": "US",
+                        "isDefault": true
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "subtotal": {
+                          "type": "number"
+                        },
+                        "tax": {
+                          "type": "number"
+                        },
+                        "shipping": {
+                          "type": "number"
+                        },
+                        "discount": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        }
+                      },
+                      "example": {
+                        "subtotal": 59.98,
+                        "tax": 5.4,
+                        "shipping": 9.99,
+                        "discount": 0,
+                        "total": 75.37
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "example": {
+                    "id": "order123",
+                    "orderNumber": "ORD-2023-0001",
+                    "status": "confirmed",
+                    "items": [
+                      {
+                        "id": "orderitem123",
+                        "product": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt"
+                        },
+                        "variant": {
+                          "size": "M",
+                          "color": "Blue"
+                        },
+                        "quantity": 2,
+                        "unitPrice": 29.99,
+                        "totalPrice": 59.98
+                      }
+                    ],
+                    "totals": {
+                      "subtotal": 59.98,
+                      "tax": 5.4,
+                      "shipping": 9.99,
+                      "total": 75.37
+                    },
+                    "createdAt": "2023-01-15T10:30:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "object"
+                    }
+                  },
+                  "example": {
+                    "error": "VALIDATION_ERROR",
+                    "message": "Invalid input data",
+                    "details": {
+                      "field": "email",
+                      "issue": "Invalid email format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "user@example.com",
+          "password": "password123"
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "firstName",
+          "lastName"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "newuser@example.com",
+          "password": "securepass123",
+          "firstName": "John",
+          "lastName": "Doe",
+          "phone": "+1234567890"
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "example": {
+              "id": "user123",
+              "email": "user@example.com",
+              "firstName": "John",
+              "lastName": "Doe",
+              "phone": "+1234567890",
+              "createdAt": "2023-01-15T10:30:00Z"
+            }
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "user": {
+            "id": "user123",
+            "email": "user@example.com",
+            "firstName": "John",
+            "lastName": "Doe"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "user123",
+          "email": "user@example.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "phone": "+1234567890",
+          "createdAt": "2023-01-15T10:30:00Z"
+        }
+      },
+      "UserUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "firstName": "John",
+          "lastName": "Smith",
+          "phone": "+1987654321"
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": "addr123",
+          "firstName": "John",
+          "lastName": "Doe",
+          "address1": "123 Main St",
+          "city": "New York",
+          "state": "NY",
+          "postalCode": "10001",
+          "country": "US",
+          "isDefault": true
+        }
+      },
+      "AddressRequest": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "address1",
+          "city",
+          "state",
+          "postalCode",
+          "country"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "example": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "address1": "456 Oak Ave",
+          "city": "Los Angeles",
+          "state": "CA",
+          "postalCode": "90210",
+          "country": "US",
+          "isDefault": false
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "inStock": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": "prod123",
+          "name": "Cotton T-Shirt",
+          "description": "Comfortable cotton t-shirt",
+          "category": "clothing",
+          "price": 29.99,
+          "imageUrl": "https://example.com/images/tshirt.jpg",
+          "inStock": true
+        }
+      },
+      "ProductDetail": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "inStock": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "prod123",
+              "name": "Cotton T-Shirt",
+              "description": "Comfortable cotton t-shirt",
+              "category": "clothing",
+              "price": 29.99,
+              "imageUrl": "https://example.com/images/tshirt.jpg",
+              "inStock": true
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "sku": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "inventory": {
+                      "type": "integer"
+                    }
+                  },
+                  "example": {
+                    "id": "var123",
+                    "size": "L",
+                    "color": "Red",
+                    "sku": "TSHIRT-L-RED",
+                    "price": 29.99,
+                    "inventory": 25
+                  }
+                }
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "example": {
+          "id": "prod123",
+          "name": "Cotton T-Shirt",
+          "description": "Comfortable cotton t-shirt",
+          "category": "clothing",
+          "price": 29.99,
+          "imageUrl": "https://example.com/images/tshirt.jpg",
+          "inStock": true,
+          "variants": [
+            {
+              "id": "var123",
+              "size": "M",
+              "color": "Blue",
+              "sku": "TSHIRT-M-BLUE",
+              "price": 29.99,
+              "inventory": 50
+            }
+          ],
+          "images": [
+            "https://example.com/images/tshirt1.jpg",
+            "https://example.com/images/tshirt2.jpg"
+          ]
+        }
+      },
+      "ProductVariant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "inventory": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "id": "var123",
+          "size": "L",
+          "color": "Red",
+          "sku": "TSHIRT-L-RED",
+          "price": 29.99,
+          "inventory": 25
+        }
+      },
+      "ProductSearchResponse": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "imageUrl": {
+                  "type": "string"
+                },
+                "inStock": {
+                  "type": "boolean"
+                }
+              },
+              "example": {
+                "id": "prod123",
+                "name": "Cotton T-Shirt",
+                "description": "Comfortable cotton t-shirt",
+                "category": "clothing",
+                "price": 29.99,
+                "imageUrl": "https://example.com/images/tshirt.jpg",
+                "inStock": true
+              }
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer"
+              },
+              "limit": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              },
+              "pages": {
+                "type": "integer"
+              }
+            },
+            "example": {
+              "page": 1,
+              "limit": 20,
+              "total": 100,
+              "pages": 5
+            }
+          }
+        },
+        "example": {
+          "products": [
+            {
+              "id": "prod123",
+              "name": "Cotton T-Shirt",
+              "category": "clothing",
+              "price": 29.99,
+              "imageUrl": "https://example.com/images/tshirt.jpg",
+              "inStock": true
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "limit": 20,
+            "total": 100,
+            "pages": 5
+          }
+        }
+      },
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    },
+                    "inStock": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "prod123",
+                    "name": "Cotton T-Shirt",
+                    "description": "Comfortable cotton t-shirt",
+                    "category": "clothing",
+                    "price": 29.99,
+                    "imageUrl": "https://example.com/images/tshirt.jpg",
+                    "inStock": true
+                  }
+                },
+                "variant": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "sku": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "inventory": {
+                      "type": "integer"
+                    }
+                  },
+                  "example": {
+                    "id": "var123",
+                    "size": "L",
+                    "color": "Red",
+                    "sku": "TSHIRT-L-RED",
+                    "price": 29.99,
+                    "inventory": 25
+                  }
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "unitPrice": {
+                  "type": "number"
+                },
+                "totalPrice": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "id": "item123",
+                "product": {
+                  "id": "prod123",
+                  "name": "Cotton T-Shirt"
+                },
+                "variant": {
+                  "id": "var123",
+                  "size": "L",
+                  "color": "Green"
+                },
+                "quantity": 1,
+                "unitPrice": 29.99,
+                "totalPrice": 29.99
+              }
+            }
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "subtotal": {
+                "type": "number"
+              },
+              "tax": {
+                "type": "number"
+              },
+              "shipping": {
+                "type": "number"
+              },
+              "discount": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "subtotal": 59.98,
+              "tax": 5.4,
+              "shipping": 9.99,
+              "discount": 0,
+              "total": 75.37
+            }
+          }
+        },
+        "example": {
+          "id": "cart123",
+          "items": [
+            {
+              "id": "item123",
+              "product": {
+                "id": "prod123",
+                "name": "Cotton T-Shirt"
+              },
+              "variant": {
+                "id": "var123",
+                "size": "M",
+                "color": "Blue"
+              },
+              "quantity": 2,
+              "unitPrice": 29.99,
+              "totalPrice": 59.98
+            }
+          ],
+          "totals": {
+            "subtotal": 59.98,
+            "tax": 5.4,
+            "shipping": 9.99,
+            "total": 75.37
+          }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "product": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "inStock": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "prod123",
+              "name": "Cotton T-Shirt",
+              "description": "Comfortable cotton t-shirt",
+              "category": "clothing",
+              "price": 29.99,
+              "imageUrl": "https://example.com/images/tshirt.jpg",
+              "inStock": true
+            }
+          },
+          "variant": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "sku": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "inventory": {
+                "type": "integer"
+              }
+            },
+            "example": {
+              "id": "var123",
+              "size": "L",
+              "color": "Red",
+              "sku": "TSHIRT-L-RED",
+              "price": 29.99,
+              "inventory": 25
+            }
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "totalPrice": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "id": "item123",
+          "product": {
+            "id": "prod123",
+            "name": "Cotton T-Shirt"
+          },
+          "variant": {
+            "id": "var123",
+            "size": "L",
+            "color": "Green"
+          },
+          "quantity": 1,
+          "unitPrice": 29.99,
+          "totalPrice": 29.99
+        }
+      },
+      "CartItemRequest": {
+        "type": "object",
+        "required": [
+          "variantId",
+          "quantity"
+        ],
+        "properties": {
+          "variantId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "example": {
+          "variantId": "var123",
+          "quantity": 2
+        }
+      },
+      "CartItemUpdateRequest": {
+        "type": "object",
+        "required": [
+          "quantity"
+        ],
+        "properties": {
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "example": {
+          "quantity": 3
+        }
+      },
+      "CartTotals": {
+        "type": "object",
+        "properties": {
+          "subtotal": {
+            "type": "number"
+          },
+          "tax": {
+            "type": "number"
+          },
+          "shipping": {
+            "type": "number"
+          },
+          "discount": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "subtotal": 59.98,
+          "tax": 5.4,
+          "shipping": 9.99,
+          "discount": 0,
+          "total": 75.37
+        }
+      },
+      "CheckoutRequest": {
+        "type": "object",
+        "required": [
+          "shippingAddressId"
+        ],
+        "properties": {
+          "shippingAddressId": {
+            "type": "string"
+          },
+          "billingAddressId": {
+            "type": "string"
+          },
+          "shippingMethod": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "express",
+              "overnight"
+            ]
+          }
+        },
+        "example": {
+          "shippingAddressId": "addr123",
+          "billingAddressId": "addr123",
+          "shippingMethod": "standard"
+        }
+      },
+      "CheckoutSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "cart": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "imageUrl": {
+                          "type": "string"
+                        },
+                        "inStock": {
+                          "type": "boolean"
+                        }
+                      },
+                      "example": {
+                        "id": "prod123",
+                        "name": "Cotton T-Shirt",
+                        "description": "Comfortable cotton t-shirt",
+                        "category": "clothing",
+                        "price": 29.99,
+                        "imageUrl": "https://example.com/images/tshirt.jpg",
+                        "inStock": true
+                      }
+                    },
+                    "variant": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "size": {
+                          "type": "string"
+                        },
+                        "color": {
+                          "type": "string"
+                        },
+                        "sku": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "inventory": {
+                          "type": "integer"
+                        }
+                      },
+                      "example": {
+                        "id": "var123",
+                        "size": "L",
+                        "color": "Red",
+                        "sku": "TSHIRT-L-RED",
+                        "price": 29.99,
+                        "inventory": 25
+                      }
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "unitPrice": {
+                      "type": "number"
+                    },
+                    "totalPrice": {
+                      "type": "number"
+                    }
+                  },
+                  "example": {
+                    "id": "item123",
+                    "product": {
+                      "id": "prod123",
+                      "name": "Cotton T-Shirt"
+                    },
+                    "variant": {
+                      "id": "var123",
+                      "size": "L",
+                      "color": "Green"
+                    },
+                    "quantity": 1,
+                    "unitPrice": 29.99,
+                    "totalPrice": 29.99
+                  }
+                }
+              },
+              "totals": {
+                "type": "object",
+                "properties": {
+                  "subtotal": {
+                    "type": "number"
+                  },
+                  "tax": {
+                    "type": "number"
+                  },
+                  "shipping": {
+                    "type": "number"
+                  },
+                  "discount": {
+                    "type": "number"
+                  },
+                  "total": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "subtotal": 59.98,
+                  "tax": 5.4,
+                  "shipping": 9.99,
+                  "discount": 0,
+                  "total": 75.37
+                }
+              }
+            },
+            "example": {
+              "id": "cart123",
+              "items": [
+                {
+                  "id": "item123",
+                  "product": {
+                    "id": "prod123",
+                    "name": "Cotton T-Shirt"
+                  },
+                  "variant": {
+                    "id": "var123",
+                    "size": "M",
+                    "color": "Blue"
+                  },
+                  "quantity": 2,
+                  "unitPrice": 29.99,
+                  "totalPrice": 59.98
+                }
+              ],
+              "totals": {
+                "subtotal": 59.98,
+                "tax": 5.4,
+                "shipping": 9.99,
+                "total": 75.37
+              }
+            }
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "addr123",
+              "firstName": "John",
+              "lastName": "Doe",
+              "address1": "123 Main St",
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10001",
+              "country": "US",
+              "isDefault": true
+            }
+          },
+          "billingAddress": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "addr123",
+              "firstName": "John",
+              "lastName": "Doe",
+              "address1": "123 Main St",
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10001",
+              "country": "US",
+              "isDefault": true
+            }
+          },
+          "shippingMethod": {
+            "type": "string"
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "subtotal": {
+                "type": "number"
+              },
+              "tax": {
+                "type": "number"
+              },
+              "shipping": {
+                "type": "number"
+              },
+              "discount": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "subtotal": 59.98,
+              "tax": 5.4,
+              "shipping": 9.99,
+              "discount": 0,
+              "total": 75.37
+            }
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "checkout123",
+          "shippingMethod": "standard",
+          "totals": {
+            "subtotal": 59.98,
+            "tax": 5.4,
+            "shipping": 9.99,
+            "total": 75.37
+          },
+          "expiresAt": "2023-01-15T11:30:00Z"
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "required": [
+          "method"
+        ],
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "card",
+              "paypal",
+              "apple_pay",
+              "google_pay"
+            ]
+          },
+          "cardDetails": {
+            "type": "object",
+            "required": [
+              "number",
+              "expiryMonth",
+              "expiryYear",
+              "cvv",
+              "name"
+            ],
+            "properties": {
+              "number": {
+                "type": "string"
+              },
+              "expiryMonth": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              "expiryYear": {
+                "type": "integer"
+              },
+              "cvv": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "number": "4111111111111111",
+              "expiryMonth": 12,
+              "expiryYear": 2025,
+              "cvv": "123",
+              "name": "John Doe"
+            }
+          },
+          "paypalDetails": {
+            "type": "object",
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "example": {
+              "email": "user@example.com"
+            }
+          }
+        },
+        "example": {
+          "method": "card",
+          "cardDetails": {
+            "number": "4111111111111111",
+            "expiryMonth": 12,
+            "expiryYear": 2025,
+            "cvv": "123",
+            "name": "John Doe"
+          }
+        }
+      },
+      "CardDetails": {
+        "type": "object",
+        "required": [
+          "number",
+          "expiryMonth",
+          "expiryYear",
+          "cvv",
+          "name"
+        ],
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "expiryMonth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "expiryYear": {
+            "type": "integer"
+          },
+          "cvv": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "number": "4111111111111111",
+          "expiryMonth": 12,
+          "expiryYear": 2025,
+          "cvv": "123",
+          "name": "John Doe"
+        }
+      },
+      "PaypalDetails": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "example": {
+          "email": "user@example.com"
+        }
+      },
+      "PaymentResponse": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed",
+              "pending"
+            ]
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "orderId": "order123",
+          "status": "success",
+          "transactionId": "txn123456",
+          "message": "Payment processed successfully"
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "confirmed",
+              "shipped",
+              "delivered",
+              "cancelled"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    },
+                    "inStock": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "prod123",
+                    "name": "Cotton T-Shirt",
+                    "description": "Comfortable cotton t-shirt",
+                    "category": "clothing",
+                    "price": 29.99,
+                    "imageUrl": "https://example.com/images/tshirt.jpg",
+                    "inStock": true
+                  }
+                },
+                "variant": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    },
+                    "sku": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "inventory": {
+                      "type": "integer"
+                    }
+                  },
+                  "example": {
+                    "id": "var123",
+                    "size": "L",
+                    "color": "Red",
+                    "sku": "TSHIRT-L-RED",
+                    "price": 29.99,
+                    "inventory": 25
+                  }
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "unitPrice": {
+                  "type": "number"
+                },
+                "totalPrice": {
+                  "type": "number"
+                }
+              },
+              "example": {
+                "id": "orderitem123",
+                "product": {
+                  "id": "prod123",
+                  "name": "Cotton T-Shirt"
+                },
+                "variant": {
+                  "size": "L",
+                  "color": "Red"
+                },
+                "quantity": 1,
+                "unitPrice": 29.99,
+                "totalPrice": 29.99
+              }
+            }
+          },
+          "shippingAddress": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "addr123",
+              "firstName": "John",
+              "lastName": "Doe",
+              "address1": "123 Main St",
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10001",
+              "country": "US",
+              "isDefault": true
+            }
+          },
+          "billingAddress": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "company": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "isDefault": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "addr123",
+              "firstName": "John",
+              "lastName": "Doe",
+              "address1": "123 Main St",
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10001",
+              "country": "US",
+              "isDefault": true
+            }
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "subtotal": {
+                "type": "number"
+              },
+              "tax": {
+                "type": "number"
+              },
+              "shipping": {
+                "type": "number"
+              },
+              "discount": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "subtotal": 59.98,
+              "tax": 5.4,
+              "shipping": 9.99,
+              "discount": 0,
+              "total": 75.37
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "id": "order123",
+          "orderNumber": "ORD-2023-0001",
+          "status": "confirmed",
+          "items": [
+            {
+              "id": "orderitem123",
+              "product": {
+                "id": "prod123",
+                "name": "Cotton T-Shirt"
+              },
+              "variant": {
+                "size": "M",
+                "color": "Blue"
+              },
+              "quantity": 2,
+              "unitPrice": 29.99,
+              "totalPrice": 59.98
+            }
+          ],
+          "totals": {
+            "subtotal": 59.98,
+            "tax": 5.4,
+            "shipping": 9.99,
+            "total": 75.37
+          },
+          "createdAt": "2023-01-15T10:30:00Z"
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "product": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "imageUrl": {
+                "type": "string"
+              },
+              "inStock": {
+                "type": "boolean"
+              }
+            },
+            "example": {
+              "id": "prod123",
+              "name": "Cotton T-Shirt",
+              "description": "Comfortable cotton t-shirt",
+              "category": "clothing",
+              "price": 29.99,
+              "imageUrl": "https://example.com/images/tshirt.jpg",
+              "inStock": true
+            }
+          },
+          "variant": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              },
+              "sku": {
+                "type": "string"
+              },
+              "price": {
+                "type": "number"
+              },
+              "inventory": {
+                "type": "integer"
+              }
+            },
+            "example": {
+              "id": "var123",
+              "size": "L",
+              "color": "Red",
+              "sku": "TSHIRT-L-RED",
+              "price": 29.99,
+              "inventory": 25
+            }
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "totalPrice": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "id": "orderitem123",
+          "product": {
+            "id": "prod123",
+            "name": "Cotton T-Shirt"
+          },
+          "variant": {
+            "size": "L",
+            "color": "Red"
+          },
+          "quantity": 1,
+          "unitPrice": 29.99,
+          "totalPrice": 29.99
+        }
+      },
+      "OrderListResponse": {
+        "type": "object",
+        "properties": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "orderNumber": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "confirmed",
+                    "shipped",
+                    "delivered",
+                    "cancelled"
+                  ]
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "product": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "category": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "imageUrl": {
+                            "type": "string"
+                          },
+                          "inStock": {
+                            "type": "boolean"
+                          }
+                        },
+                        "example": {
+                          "id": "prod123",
+                          "name": "Cotton T-Shirt",
+                          "description": "Comfortable cotton t-shirt",
+                          "category": "clothing",
+                          "price": 29.99,
+                          "imageUrl": "https://example.com/images/tshirt.jpg",
+                          "inStock": true
+                        }
+                      },
+                      "variant": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "size": {
+                            "type": "string"
+                          },
+                          "color": {
+                            "type": "string"
+                          },
+                          "sku": {
+                            "type": "string"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "inventory": {
+                            "type": "integer"
+                          }
+                        },
+                        "example": {
+                          "id": "var123",
+                          "size": "L",
+                          "color": "Red",
+                          "sku": "TSHIRT-L-RED",
+                          "price": 29.99,
+                          "inventory": 25
+                        }
+                      },
+                      "quantity": {
+                        "type": "integer"
+                      },
+                      "unitPrice": {
+                        "type": "number"
+                      },
+                      "totalPrice": {
+                        "type": "number"
+                      }
+                    },
+                    "example": {
+                      "id": "orderitem123",
+                      "product": {
+                        "id": "prod123",
+                        "name": "Cotton T-Shirt"
+                      },
+                      "variant": {
+                        "size": "L",
+                        "color": "Red"
+                      },
+                      "quantity": 1,
+                      "unitPrice": 29.99,
+                      "totalPrice": 29.99
+                    }
+                  }
+                },
+                "shippingAddress": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "company": {
+                      "type": "string"
+                    },
+                    "address1": {
+                      "type": "string"
+                    },
+                    "address2": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "addr123",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "address1": "123 Main St",
+                    "city": "New York",
+                    "state": "NY",
+                    "postalCode": "10001",
+                    "country": "US",
+                    "isDefault": true
+                  }
+                },
+                "billingAddress": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "company": {
+                      "type": "string"
+                    },
+                    "address1": {
+                      "type": "string"
+                    },
+                    "address2": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "addr123",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "address1": "123 Main St",
+                    "city": "New York",
+                    "state": "NY",
+                    "postalCode": "10001",
+                    "country": "US",
+                    "isDefault": true
+                  }
+                },
+                "totals": {
+                  "type": "object",
+                  "properties": {
+                    "subtotal": {
+                      "type": "number"
+                    },
+                    "tax": {
+                      "type": "number"
+                    },
+                    "shipping": {
+                      "type": "number"
+                    },
+                    "discount": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  },
+                  "example": {
+                    "subtotal": 59.98,
+                    "tax": 5.4,
+                    "shipping": 9.99,
+                    "discount": 0,
+                    "total": 75.37
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "example": {
+                "id": "order123",
+                "orderNumber": "ORD-2023-0001",
+                "status": "confirmed",
+                "items": [
+                  {
+                    "id": "orderitem123",
+                    "product": {
+                      "id": "prod123",
+                      "name": "Cotton T-Shirt"
+                    },
+                    "variant": {
+                      "size": "M",
+                      "color": "Blue"
+                    },
+                    "quantity": 2,
+                    "unitPrice": 29.99,
+                    "totalPrice": 59.98
+                  }
+                ],
+                "totals": {
+                  "subtotal": 59.98,
+                  "tax": 5.4,
+                  "shipping": 9.99,
+                  "total": 75.37
+                },
+                "createdAt": "2023-01-15T10:30:00Z"
+              }
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer"
+              },
+              "limit": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              },
+              "pages": {
+                "type": "integer"
+              }
+            },
+            "example": {
+              "page": 1,
+              "limit": 20,
+              "total": 100,
+              "pages": 5
+            }
+          }
+        },
+        "example": {
+          "orders": [
+            {
+              "id": "order123",
+              "orderNumber": "ORD-2023-0001",
+              "status": "delivered",
+              "totals": {
+                "total": 75.37
+              },
+              "createdAt": "2023-01-15T10:30:00Z"
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 25,
+            "pages": 3
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "pages": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "page": 1,
+          "limit": 20,
+          "total": 100,
+          "pages": 5
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        },
+        "example": {
+          "error": "VALIDATION_ERROR",
+          "message": "Invalid input data",
+          "details": {
+            "field": "email",
+            "issue": "Invalid email format"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "error": "VALIDATION_ERROR",
+                "message": "Invalid input data",
+                "details": {
+                  "field": "email",
+                  "issue": "Invalid email format"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Authentication required",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "error": "VALIDATION_ERROR",
+                "message": "Invalid input data",
+                "details": {
+                  "field": "email",
+                  "issue": "Invalid email format"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object"
+                }
+              },
+              "example": {
+                "error": "VALIDATION_ERROR",
+                "message": "Invalid input data",
+                "details": {
+                  "field": "email",
+                  "issue": "Invalid email format"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
