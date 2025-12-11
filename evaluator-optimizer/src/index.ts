@@ -14,8 +14,11 @@ async function main() {
     console.log("🚀 Starting Evaluator-Optimizer Test\n");
     console.log("=".repeat(80));
 
-    // Create client and summarizer
-    const client = new AnthropicClient({ apiKey });
+    // Create client with higher token limit for large OpenAPI specs
+    const client = new AnthropicClient({
+        apiKey,
+        maxTokens: 16000  // Increase for complex OpenAPI specs
+    });
   
     console.log("Starting API Spec Optimization...");
     console.log("Requirements:", ecommerceRequirements.description);
@@ -43,12 +46,13 @@ async function main() {
     });
 
     // Save final spec to file
+    await fs.mkdir('output', { recursive: true });
     await fs.writeFile(
         'output/final-openapi-spec.json',
         JSON.stringify(result.finalSpec, null, 2)
     );
 
-    console.log("\nFinal spec saved to output/final-openapi-spec.json");
+    console.log("\n✓ Final spec saved to output/final-openapi-spec.json");
 }
 
 main().catch(console.error);
