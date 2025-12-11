@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "test:max-iterations": "tsx src/test-max-iterations.ts"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
