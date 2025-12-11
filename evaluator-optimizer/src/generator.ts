@@ -26,12 +26,11 @@ export async function generateOpenAPISpec(
         - Features: ${requirements.features.join(', ')}
 
         Provide:
-        1. Complete OpenAPI 3.0 spec in JSON format
-        2. Proper HTTP methods and status codes
-        3. Request/response schemas with validation
-        4. Security schemes (JWT authentication)
-        5. Error responses for all endpoints
-        6. Descriptions and examples
+        1. Use component schemas with $ref to avoid repetition
+        2. Keep descriptions brief (1-2 sentences)
+        3. Include 1 example per schema, not multiple
+        4. Use standard error response schema references
+        5. Focus on structure over verbose documentation
 
         Return ONLY valid JSON for the OpenAPI spec, no markdown formatting.`;
                 } else if (feedback) {
@@ -74,6 +73,12 @@ export async function generateOpenAPISpec(
         };
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('\n=== JSON PARSE ERROR ===');
+        console.error('Error:', errorMessage);
+        console.error('\n=== RAW RESPONSE (first 500 chars) ===');
+        console.error(rawResponse.substring(0, 500));
+        console.error('\n=== RAW RESPONSE (last 500 chars) ===');
+        console.error(rawResponse.substring(rawResponse.length - 500));
         throw new Error(`Failed to parse JSON from generator: ${errorMessage}`);
     }
 }
