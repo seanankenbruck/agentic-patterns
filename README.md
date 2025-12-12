@@ -21,10 +21,10 @@ Coordinate multiple worker agents from a central orchestrator. Demonstrates task
 #### [Evaluator-Optimizer](./evaluator-optimizer)
 Iterative refinement loop where an evaluator provides feedback to improve generated artifacts. Generates and optimizes OpenAPI specifications through validation and quality assessment cycles.
 
-### 🚧 Coming Soon
-
-#### Reason-Act (ReAct)
+#### Reason-Act [ReAct](./reason-act)
 Interleave reasoning and action steps, allowing the agent to dynamically plan and execute based on observations.
+
+### 🚧 Coming Soon
 
 #### Agent Collaboration
 Multiple specialized agents work together, coordinating to solve complex tasks through negotiation and information sharing.
