@@ -24,10 +24,10 @@ Iterative refinement loop where an evaluator provides feedback to improve genera
 #### Reason-Act [ReAct](./reason-act)
 Interleave reasoning and action steps, allowing the agent to dynamically plan and execute based on observations.
 
-### 🚧 Coming Soon
-
-#### Agent Collaboration
+#### [Agent Collaboration](./agent-debate-workflow)
 Multiple specialized agents work together, coordinating to solve complex tasks through negotiation and information sharing.
+
+### 🚧 Coming Soon
 
 #### Autonomous Agent
 Self-directed agent that independently plans, executes, and adapts to achieve long-term goals with minimal human intervention.
