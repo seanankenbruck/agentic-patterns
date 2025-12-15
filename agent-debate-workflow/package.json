@@ -1,0 +1,16 @@
+{
+  "name": "agent-debate-workflow",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Multi-agent collaboration via a debate workflow",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "instrument": "node --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2"
+  }
+}
