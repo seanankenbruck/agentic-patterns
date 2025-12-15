@@ -3,7 +3,7 @@
 This example demonstrates multi-agent collaboration via a **moderated debate workflow** that begins by introducing a topic with context, a moderator agent analyzes the topic and proposes initial questions, then additional agents debate the topic until convergence is reached or a maximum iteration limit is exceeded.
 
 ## Overview
-TBD
+A sophisticated debate pattern implementation featuring three stakeholder perspectives (Engineering, Business, Security) arguing about technical architecture decisions.
 
 ## Workflow
 
@@ -34,6 +34,41 @@ debate-workflow/
 ├── package.json
 └── tsconfig.json
 ```
+
+## Setup
+
+1. Install dependencies:
+```bash
+   npm install
+```
+
+2. Set your Anthropic API key:
+```bash
+   export ANTHROPIC_API_KEY="your_api_key"
+```
+
+3. Run the debate:
+```bash
+   npm start
+```
+
+## How It Works
+
+The debate follows this pattern:
+
+1. **Opening**: Moderator introduces topic and asks first question
+2. **Dynamic Loop**: 
+   - Debaters respond with their perspective
+   - Moderator analyzes arguments and identifies agreements/disagreements
+   - Moderator selects next speaker strategically
+   - Continues until convergence or max rounds
+3. **Synthesis**: Moderator produces final recommendation
+
+## Output
+
+- Live debate transcript in terminal (colorized)
+- Saved markdown transcript in `./output/`
+- Statistics on debate progression
 
 ## Key Differences from ReAct
 
