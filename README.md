@@ -27,10 +27,8 @@ Interleave reasoning and action steps, allowing the agent to dynamically plan an
 #### [Agent Collaboration](./agent-debate-workflow)
 Multiple specialized agents work together, coordinating to solve complex tasks through negotiation and information sharing.
 
-### 🚧 Coming Soon
-
-#### Autonomous Agent
-Self-directed agent that independently plans, executes, and adapts to achieve long-term goals with minimal human intervention.
+#### [Autonomous Agent](https://github.com/seanankenbruck/autonomous-research-agent)
+An autonomous AI agent with persistent memory, adaptive learning, and multi-session capabilities for conducting research tasks. This pattern has been moved to its own repo.
 
 ## Getting Started
 
